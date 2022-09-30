@@ -1,0 +1,96 @@
+                       data input file for layers.f
+
+-------------------------------------------------------------------------------
+<> Tidal contribution - 
+
+   mass of the external particle (in kg)        : 5.6842d26
+   distance to the center of the body (in km)   : 1.22195d6
+
+-------------------------------------------------------------------------------
+<> Rotational contribution - 
+
+   rotation velocity  (in s^-1)                 : 4.5610d-6
+
+-------------------------------------------------------------------------------
+<> Mass distribution
+
+   input file name                              : density.in
+   number of layers (0 for import a file)       : 0
+   mean radius of layer 1 (in km)               : 2250.0d0
+   mean radius of layer 2 (in km)               : 2575.0d0
+   density of layer 1 (in g/cm^3)               : 2.34d0
+   density of layer 2 (in g/cm^3)               : 0.97d0
+
+-------------------------------------------------------------------------------
+<> Output
+
+   general output file                          : layers.dat
+   flatening data (yes or no)                   : yes
+   on screen (yes or no)                        : no
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+                              EXPLANATIONS
+
+GENERAL CONSIDERATIONS:
+
+  All characters must be in small letters (do not use caps).
+  When changing the input, please maintain the same format and the columns
+  assigned to each value. 
+  
+MASS DISTRIBUTION
+
+  For a few layers you can enter the data of the mass distribution directly 
+  from this file. In this case you should not take into account the input 
+  file name.
+  For a large number of layers you can provide an input file and put the 
+  number of layers equals to zero. The density of each layer must be given 
+  as a function of the mean radius of said layer with the following format
+
+      r1       rho1
+      r2       rho2
+      .         .
+      .         .
+      .         .
+      rN       rhoN
+
+   where r1<r2<...<rN, rk in km and rhok in g/cm^3.
+   The continuous case can also be calculated using the program 'gen-layers.f'.
+   This program generates a file 'density.in' starting from a continuous 
+   density profile, generating a large number thin homogeneous layers that 
+   approximate the continuous solution.
+
+SOME DEFINITIONS
+
+    If ak,bk,ck are the external semi-axes corresponding to k-th layer, then 
+
+    r(k)  = (ak*bk*ck)^1/3    mean radius to k-th layer
+    f1(k) = (ak-ck)/ck        polar flattening in the direction of the external particle to k-th layer
+    f2(k) = (bk-ck)/ck        polar flattening in the direction perpendicular to the direction of the external particle to k-th layer
+    f3(k) = (ak-bk)/ak        equatorial flattening to k-th layer
+
+    kf is the equivalent fluid Love number, that is the value that should have 
+    the fluid Love number of a homogeneous ellipsoid with equal mass, dimensions 
+    and flattening that the inhomogeneous body.
+
+HOMOGENEOUS AND INHOMOGENEOUS SOLUTIONS
+
+    The homogeneous solutions to first order are
+
+    Jeans solution: Only tide           a>b=c  ---> f1 = f3 == ej and f2 = 0
+    MacLaurin solution: Only rotation   a=b>c  ---> f1 = f2 == em and f3 = 0
+    Roche solution: Tide + Rotation     a>b>c  ---> f1 == ej+em, f2 == em, f3 == ej
+
+    The general solution can be written as
+
+    E*f1 = D*(ej+em)  ---->  f1 = E^-1*D*(ej+em) = F*(ej+em)
+    E*f2 = D*em       ---->  f2 = E^-1*D*em      = F*em
+    E*f3 = D*ej       ---->  f3 = E^-1*D*ej      = F*ej
+
+    where E is a matrix entirely defined by the distribution of mass 
+    and D is a vector with components Dk = (rk/rN)^3
+
+
+
+
+
